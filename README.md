@@ -28,11 +28,11 @@
 
 ### 登录界面
 
-![登录界面](/uploads/photo/2018/28db2993-26e2-4c82-80de-5ab3771fdde0.png!large)
+![登录界面](https://testerhome.com/uploads/photo/2018/28db2993-26e2-4c82-80de-5ab3771fdde0.png!large)
 
 ### 项目管理
 
-![项目管理](/uploads/photo/2018/a920c1e6-3f89-4fe6-a7df-01b296baa1cb.png!large)
+![项目管理](https://testerhome.com/uploads/photo/2018/a920c1e6-3f89-4fe6-a7df-01b296baa1cb.png!large)
 
 ### 环境变量管理
 
