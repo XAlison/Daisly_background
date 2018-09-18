@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icekredit.mapper.mapperOffLine.SettingMapper">
+
+    <resultMap id="SettingResultMap" type="com.icekredit.pojo.Setting">
+        <id column="id" property="id" />
+        <result column="mkey" property="key" />
+        <result column="value" property="value" />
+        <result column="remark" property="remark" />
+        <result column="createTime" property="createTime" />
+        <result column="status" property="status" />
+        <result column="type" property="type" />
+        <result column="canDelete" property="canDelete" />
+        <result column="sequence" property="sequence" />
+    </resultMap>
+    <sql id="settingColumns">
+        id,
+        mkey,
+        value,
+        remark,
+        createTime,
+        status,
+        type,
+        canDelete,
+        sequence
+    </sql>
+    <!-- 查出所有的settings -->
+    <select id="getSettings" resultMap="SettingResultMap" resultType="com.icekredit.pojo.Setting">
+        SELECT
+        <include refid="settingColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
+        FROM setting
+    </select>
+
+    <!-- 根据key查出所有的settings -->
+    <select id="getSettingByMap" resultMap="SettingResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="settingColumns"/>
+        FROM setting  where mkey=#{key, jdbcType=VARCHAR}
+    </select>
+
+</mapper>

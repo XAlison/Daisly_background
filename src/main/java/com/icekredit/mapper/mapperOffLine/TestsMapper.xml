@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icekredit.mapper.mapperOffLine.TestsMapper">
+    <sql id="testsColumns">
+        a.id,
+        a.test_name,
+        a.run_num,
+        a.is_sucess,
+        a.passed_num,
+        a.failed_num,
+        a.create_by,
+        a.create_date,
+        a.update_by,
+        a.update_date,
+        a.remarks,
+        a.del_flag,
+        a.belong_flag,
+        a.api_info,
+        a.last_result,
+        a.sequence
+    </sql>
+
+    <resultMap id="TestsResultMap" type="com.icekredit.pojo.Tests">
+        <id column="id" property="id" />
+        <result column="test_name" property="testName" />
+        <result column="run_num" property="runNum" />
+        <result column="is_sucess" property="isSucess" />
+        <result column="passed_num" property="passedNum" />
+        <result column="failed_num" property="failedNum" />
+        <result column="create_by" property="createBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_date" property="updateDate" />
+        <result column="remarks" property="remarks" />
+        <result column="del_flag" property="delFlag" />
+        <result column="belong_flag" property="belongFlag" />
+        <result column="api_info" property="apiInfo" />
+        <result column="last_result" property="lastResult"/>
+        <result column="sequence" property="sequence" />
+    </resultMap>
+
+    <select id="getAllTests" resultMap="TestsResultMap">
+        SELECT
+        <include refid="testsColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
+        FROM sys_tests a WHERE a.del_flag='0'
+    </select>
+    <!-- 根据test name 查询-->
+    <select id="getByTestName" resultMap="TestsResultMap" parameterType="com.icekredit.pojo.Tests">
+        SELECT
+        <include refid="testsColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
+        FROM sys_tests a
+        WHERE a.test_name = #{testName}
+    </select>
+
+    <insert id="saveTest"  parameterType="com.icekredit.pojo.Tests">
+      insert into sys_tests (
+			id,
+			test_name,
+			create_by,
+			create_date,
+			api_info
+		) values (
+			#{id},
+			#{testName},
+			#{createBy},
+			now(),
+			#{apiInfo}
+		)
+    </insert>
+
+    <select id="getTestCreateNumByDate" parameterType="java.lang.String" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        sys_tests
+        WHERE DATE_FORMAT(create_date, '%Y-%m-%d')=#{date}
+    </select>
+
+    <update id="updateTest" parameterType="com.icekredit.pojo.Tests">
+        update sys_tests
+        set
+        api_info = #{apiInfo},
+        update_by = #{updateBy},
+        update_date = now()
+        where test_name = #{testName}
+    </update>
+    <update id="runNumPlusPlus" parameterType="java.lang.String">
+        UPDATE sys_tests
+        SET
+        run_num=run_num+1
+        WHERE test_name=#{name,jdbcType=VARCHAR}
+    </update>
+    <update id="failNumPlusPlus" parameterType="java.lang.String">
+        UPDATE sys_tests
+        SET
+        failed_num=failed_num+1
+        WHERE test_name=#{name,jdbcType=VARCHAR}
+    </update>
+    <update id="passNumPlusPlus" parameterType="java.lang.String">
+        UPDATE sys_tests
+        SET
+        passed_num=passed_num+1
+        WHERE test_name=#{name,jdbcType=VARCHAR}
+    </update>
+    <update id="updateTestStatus">
+        UPDATE sys_tests
+        SET
+        is_sucess=#{1}
+        WHERE test_name=#{0}
+    </update>
+
+    <update id="deleteByName" parameterType="java.lang.String">
+        UPDATE sys_tests
+        SET
+        del_flag='1'
+        WHERE test_name=#{name,jdbcType=VARCHAR}
+    </update>
+
+    <update id="upadteTestResult">
+        UPDATE sys_tests
+        SET
+        last_result=#{1}
+        WHERE test_name=#{0}
+    </update>
+
+</mapper>
